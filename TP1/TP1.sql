@@ -42,41 +42,41 @@ CREATE TABLE VOL2(
 -- QUESTION 2
 INSERT INTO VILLE (ID_VILLE, XMIN, XMAX, YMIN, YMAX)
 VALUES
-('Dijon', 8950, 9180, 4840, 5050), -- Dijon
-('Lyon', 8820, 9080, 7020, 7230), -- Lyon
-('Paris', 6310, 6560, 2940, 3110), -- Paris
-('Marseille', 9660, 9930, 10350, 10580), -- Marseille
-('Nantes', 2730, 2970, 5320, 5540); -- Nantes
+('Dijon', 8950, 9180, 4840, 5050), 
+('Lyon', 8820, 9080, 7020, 7230), 
+('Paris', 6310, 6560, 2940, 3110), 
+('Marseille', 9660, 9930, 10350, 10580), 
+('Nantes', 2730, 2970, 5320, 5540); 
 
+-- QUESTION 3
 INSERT INTO PILOTE (PLNUM, PLNOM, PLPRENOM, SALAIRE, ID_VILLE)
 VALUES
-(1, 'Solomon', 'Asres', 21000, 'Paris'), -- Paris
-(2, 'Barth', 'Florie', 21000, 'Lyon'), -- Toulouse (remplacer par l'identifiant de Toulouse si dans VILLE)
-(3, 'Nicolle', 'Xavier', 18000, 'Dijon'), -- Nice (remplacer par l'identifiant de Nice si dans VILLE)
-(4, 'Dupont', 'Nicolas', 17000, 'Paris'); -- Paris
+(1, 'Solomon', 'Asres', 21000, 'Paris'), 
+(2, 'Barth', 'Florie', 21000, 'Toulouse'),
+(3, 'Nicolle', 'Xavier', 18000, 'Nice'), 
+(4, 'Dupont', 'Nicolas', 17000, 'Paris'); 
 
 INSERT INTO AVION (AV_NUM, AVNOM, LOCALISATION, CAPACITE)
 VALUES
-(1, 'A300', 'Paris', 300), -- Nice (remplacer par l'identifiant de Nice si dans VILLE)
-(2, 'A310', 'Paris', 300), -- Nice
-(3, 'B707', 'Paris', 250), -- Paris
-(4, 'A300', 'Lyon', 280); -- Lyon
+(1, 'A300', 'Nice', 300), 
+(2, 'A310', 'Nice', 300), 
+(3, 'B707', 'Paris', 250),
+(4, 'A300', 'Lyon', 280); 
 
 INSERT INTO AGENCE (CODE, VILLE)
 VALUES
-('AG001', 'Paris'), -- Paris
-('AG002', 'Paris'), -- Nice
-('AG003', 'Paris'), -- Nice
-('AG004', 'Lyon'); -- Lyon
+('AG001', 'Paris'),
+('AG002', 'Nice'), 
+('AG003', 'Nice'), 
+('AG004', 'Lyon'); 
 
 INSERT INTO VOL2 (VOLNUM, PLNUM, AV_NUM, VILLEDEP, VILLEARR, HEUREDEP, HEUREARR)
 VALUES
-(1, 1, 1, 'Paris', 'Lyon', TO_DATE('11:00', 'HH24:MI'), TO_DATE('12:00', 'HH24:MI')), -- Nice -> Toulouse
-(2, 2, 1, 'Paris', 'Paris', TO_DATE('17:00', 'HH24:MI'), TO_DATE('18:00', 'HH24:MI')), -- Paris -> Toulouse
-(3, 3, 2, 'Lyon', 'Lyon', TO_DATE('14:00', 'HH24:MI'), TO_DATE('16:00', 'HH24:MI')), -- Toulouse -> Lyon
-(4, 3, 3, 'Lyon', 'Paris', TO_DATE('18:00', 'HH24:MI'), TO_DATE('20:00', 'HH24:MI')), -- Toulouse -> Paris
-(5, 4, 3, 'Paris', 'Paris', TO_DATE('06:00', 'HH24:MI'), TO_DATE('08:00', 'HH24:MI')); -- Paris -> Nice
--- QUESTION 3
+(1, 1, 1, 'Nice', 'TOulouse', TO_DATE('11:00', 'HH24:MI'), TO_DATE('12:00', 'HH24:MI')), 
+(2, 2, 1, 'Paris', 'Toulouse', TO_DATE('17:00', 'HH24:MI'), TO_DATE('18:00', 'HH24:MI')), 
+(3, 3, 2, 'Toulouse', 'Lyon', TO_DATE('14:00', 'HH24:MI'), TO_DATE('16:00', 'HH24:MI')), 
+(4, 3, 3, 'Toulouse', 'Lyon', TO_DATE('18:00', 'HH24:MI'), TO_DATE('20:00', 'HH24:MI')), 
+(5, 4, 3, 'Paris', 'Nice', TO_DATE('06:00', 'HH24:MI'), TO_DATE('08:00', 'HH24:MI')); 
 RENAME TABLE VOL2 TO TRAJETS;
 RENAME TABLE PILOTE TO PERSONNEL;
 
@@ -129,3 +129,5 @@ WHERE SALAIRE > &valeur_à_saisir;
 --QUESTION 9
 SELECT AVNUM, AVNOM, CAPACITE, LOCALISATION FROM AVION
 WHERE LOCALISATION = (SELECT PLNOM FROM PERSONNEL WHERE PLNUM = &valeur_à_saisir);
+
+--QUESTION 10
