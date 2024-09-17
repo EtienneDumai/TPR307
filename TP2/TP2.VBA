@@ -41,3 +41,27 @@ Else
 End If
 db.Close
 End Sub
+'Question 3
+Private Sub MODIFICATION_MouseMove() 
+Dim db As Database 
+Dim tb_agence As Recordset
+Dim tb_ville As Recordset 
+Set db = CurrentDb() 
+Set tb_agence = db.OpenRecordset("SELECT * FROM AGENCE WHERE VILLE='TOURS'", dbOpenDynaset)
+Set tb_ville = db.OpenRecordset("SELECT * FROM VILLE WHERE VILLE='POITIERS'", dbOpenDynaset) 
+If Not tb_ville.EOF Then 
+    If tb_ville.EOF Then
+        tb_ville.AddNew
+        tb_ville("VILLE") = "POITIERS"
+        tb_ville("XMIN") = 1001
+        tb_ville("XMAX") = 2002
+        tb_ville("YMIN") = 3003
+        tb_ville("YMAX") = 4004
+        tb_ville.Update
+    End If
+    tb_ville.Edit 
+    tb_ville("VILLE") = "POITIERS" 
+    tb_ville.Update 
+End If 
+db.Close
+End Sub
