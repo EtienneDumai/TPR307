@@ -65,6 +65,7 @@ If Not tb_ville.EOF Then
 End If 
 db.Close
 End Sub
+<<<<<<< HEAD
 'Question 4 
 Private Sub SUPPRESSION_Click()
 Dim db As Database
@@ -79,3 +80,14 @@ If Not tb_agence.EOF Then
 End If
 db.Close
 End Sub
+=======
+'QUESTION 4 :
+PRIVATE Sub Supression_Click()
+Dim db AS Database
+Dim tb_agence AS Recordset
+Dim tb_ville AS Recordset
+set db = CurrentDb()
+Set tb_agence = OpenRecordset("SELECT * FROM AGANCE WHERE VILLE = 'POITIERS'", dbOpenDynaset)
+Set tb_ville = OpenrecordSet("SELECT * FROM VILLE WHERE VILLE = 'POITIERS")
+If Not tb_ville.EOF Then
+>>>>>>> d857f7ce278b6a54566ac3eaea1574691576e99a
