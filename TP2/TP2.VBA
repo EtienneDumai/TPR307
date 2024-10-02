@@ -80,4 +80,32 @@ End If
 db.Close
 End Sub
 'PARTIE 2 ADO
+'Initialiser les données dans la fct de l'ouverture du formulaire
 'Question 1
+SELECT A.AVNOM AS NOM , A.CAPACITE FROM AVION A
+'Question 2
+Dim cn As ADODB.Connection
+Dim rs As ADODB.Recordset
+Private Sub Form_Load()
+Set cn = CurrentProject.Connection
+rs.Open"SELECT * FROM AVION A"
+End Sub
+
+Private Sub Debut_Click()
+If Not rs.Eof Then
+    rs.MoveFirst
+    etiq.Value = "L'avion " & rs.Field("nom").Value & " a une capacité de " & rs.Field("capacite").Value
+End If
+End Sub
+Private Sub btn_Suivant_Click()
+If Not rs.Eof Then
+    rs.MoveNext
+    etiq.Value = "L'avion " & rs.Field("nom").Value & " a une capacité de " & rs.Field("capacite").Value
+End If
+End Sub
+Private Sub btn_Prec_Click()
+If Not rs.Bof Then
+    rs.MovePrevious
+    etiq.Value = "L'avion " & rs.Field("nom").Value & " a une capacité de " & rs.Field("capacite").Value
+End If
+End Sub
