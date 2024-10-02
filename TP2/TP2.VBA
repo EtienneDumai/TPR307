@@ -65,3 +65,17 @@ If Not tb_ville.EOF Then
 End If 
 db.Close
 End Sub
+'Question 4 
+Private Sub SUPPRESSION_Click()
+Dim db As Database
+Dim tb_agence As Recordset
+Dim tb_ville As Recordset
+Set db = CurrentDb()
+Set tb_agence = db.OpenRecordset("SELECT * FROM AGENCE WHERE VILLE='POITIERS'", dbOpenDynaset)
+Set tb_ville = db.OpenRecordset("SELECT * FROM VILLE WHERE VILLE='POITIERS'", dbOpenDynaset)
+If Not tb_agence.EOF Then
+    tb_agence.Delete
+    tb_ville.Delete
+End If
+db.Close
+End Sub
