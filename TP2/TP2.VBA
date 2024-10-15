@@ -97,15 +97,26 @@ If Not rs.Eof Then
     etiq.Value = "L'avion " & rs.Field("nom").Value & " a une capacité de " & rs.Field("capacite").Value
 End If
 End Sub
+
 Private Sub btn_Suivant_Click()
 If Not rs.Eof Then
     rs.MoveNext
     etiq.Value = "L'avion " & rs.Field("nom").Value & " a une capacité de " & rs.Field("capacite").Value
 End If
 End Sub
+
 Private Sub btn_Prec_Click()
 If Not rs.Bof Then
     rs.MovePrevious
+    If Not rs.Bof Then
+        etiq.Value = "L'avion " & rs.Field("nom").Value & " a une capacité de " & rs.Field("capacite").Value
+    End If
+End If
+End Sub
+
+Private Sub btn_Fin_Click()
+if Not rs.Eof Then
+    rs.MoveLast
     etiq.Value = "L'avion " & rs.Field("nom").Value & " a une capacité de " & rs.Field("capacite").Value
 End If
 End Sub
