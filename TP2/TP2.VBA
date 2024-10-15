@@ -120,3 +120,28 @@ if Not rs.Eof Then
     etiq.Value = "L'avion " & rs.Field("nom").Value & " a une capacité de " & rs.Field("capacite").Value
 End If
 End Sub
+
+'PARTIE 3 
+Private Sub affciher_ville_Click()
+Dim db As Database
+Dim tb_agence As Recordset
+Dim tb_ville As Recordset
+Set db = CurrentDb()
+Set tb_agence = db.OpenRecordset("SELECT * FROM EDUMAI_AGENCE", dbOpenDynaset)
+Set tb_ville = db.OpenRecordset("SELECT * FROM EDUMAI_VILLE", dbOpenDynaset)
+If Not tb_ville.Eof Then
+    tb_ville.MoveFirst
+    While Not tb_ville.Eof
+    'On suppose que currentX et currentY sont les coordonées de la souris où se produit le click
+        if tb_ville("XMAX") < currentX And tb_ville("XMIN") > currentX And tb_ville("YMAX") < currentY And tb_ville("YMIN") > currentY Then
+            While Not tb_agence.Eof
+                If tb_agence("VILLE") = tb_ville("ID_VILLE") Then
+                    etiq.Value = "Le nom de l'agence dans cette ville est : " &tb_agence("NOM").value
+                End If
+                tb_agence.MoveNext
+                
+            Wend
+        End If
+        tb_ville.MoveNext
+    Wend
+End If
