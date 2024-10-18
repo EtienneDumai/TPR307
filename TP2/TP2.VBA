@@ -48,12 +48,12 @@ Dim db As Database
 Dim tb_agence As Recordset
 Dim tb_ville As Recordset 
 Set db = CurrentDb() 
-Set tb_agence = db.OpenRecordset("SELECT * FROM AGENCE WHERE VILLE='TOURS'", dbOpenDynaset)
-Set tb_ville = db.OpenRecordset("SELECT * FROM VILLE WHERE VILLE='POITIERS'", dbOpenDynaset) 
+Set tb_agence = db.OpenRecordset("SELECT * FROM EDUMAI_AGENCE WHERE VILLE='TOURS'", dbOpenDynaset)
+Set tb_ville = db.OpenRecordset("SELECT * FROM EDUMAI_VILLE WHERE VILLE='POITIERS'", dbOpenDynaset) 
 If Not tb_ville.EOF Then 
     If tb_ville.EOF Then
         tb_ville.AddNew
-        tb_ville("VILLE") = "POITIERS"
+        tb_ville("ID_VILLE") = "POITIERS"
         tb_ville("XMIN") = 1001
         tb_ville("XMAX") = 2002
         tb_ville("YMIN") = 3003
@@ -84,9 +84,10 @@ End Sub
 'Question 1
 SELECT A.AVNOM AS NOM , A.CAPACITE FROM AVION A
 'Question 2
+
+Private Sub Form_Load()
 Dim cn As ADODB.Connection
 Dim rs As ADODB.Recordset
-Private Sub Form_Load()
 Set cn = CurrentProject.Connection
 rs.Open"SELECT * FROM AVION A"
 End Sub
@@ -94,34 +95,24 @@ End Sub
 Private Sub Debut_Click()
 If Not rs.Eof Then
     rs.MoveFirst
-    etiq.Value = "L'avion " & rs.Field("nom").Value & " a une capacité de " & rs.Field("capacite").Value
+    etiq.Value = "L'avion " & rs.Field("avnom").Value & " a une capacité de " & rs.Field("capacite").Value
 End If
 End Sub
-
 Private Sub btn_Suivant_Click()
 If Not rs.Eof Then
     rs.MoveNext
-    etiq.Value = "L'avion " & rs.Field("nom").Value & " a une capacité de " & rs.Field("capacite").Value
+    etiq.Value = "L'avion " & rs.Field("avnom").Value & " a une capacité de " & rs.Field("capacite").Value
 End If
 End Sub
-
 Private Sub btn_Prec_Click()
 If Not rs.Bof Then
     rs.MovePrevious
-    If Not rs.Bof Then
-        etiq.Value = "L'avion " & rs.Field("nom").Value & " a une capacité de " & rs.Field("capacite").Value
-    End If
+    etiq.Value = "L'avion " & rs.Field("avnom").Value & " a une capacité de " & rs.Field("capacite").Value
 End If
 End Sub
 
-Private Sub btn_Fin_Click()
-if Not rs.Eof Then
-    rs.MoveLast
-    etiq.Value = "L'avion " & rs.Field("nom").Value & " a une capacité de " & rs.Field("capacite").Value
-End If
-End Sub
 
-'PARTIE 3 
+'partie 3 : 
 Private Sub affciher_ville_Click()
 Dim db As Database
 Dim tb_agence As Recordset
