@@ -163,4 +163,90 @@ END;
 set serveroutput on
 
 
+CREATE OR REPLACE FUNCTION salaire_emp(nom VARCHAR2)
+RETURN NUMBER IS
+salaireV  EMP.SALAIRE%TYPE;
+BEGIN 
+  SELECT salaire INTO salaireV FROM EMP
+  WHERE nomComplet=nom;
+  
+  RETURN salaireV;
+EXCEPTION
+  WHEN NO_DATA_FOUND Then
+    dbms_output.put_line('Ca nexiste pas');
+    RETURN NULL;
+END;
+
+
+
+SET SERVEROUTPUT ON;
+
+BEGIN
+
+  SYS.DBMS_OUTPUT.PUT_LINE(salaire_emp('BARTH Florent'));
+END;
+
+/
+
+CREATE OR REPLACE PROCEDURE affecter_emp_dept(nomEmp VARCHAR2, idDept NUMBER)IS
+  BEGIN
+    UPDATE EMP SET NUMDEP = idDept WHERE nomComplet=nomEmp;
+    COMMIT;
+    DBMS_OUTPUT.PUT_LINE(idDept);
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN DBMS_OUTPUT.PUT_LINE('Employé non trouvé');
+END;
+
+BEGIN
+ AFFECTER_EMP_DEPT('BARTH Floren',9);
+END;
+
+CREATE OR REPLACE FUNCTION exist_emp(nomEmp VARCHAR2) RETURN BOOLEAN IS
+IDEMP EMP.NUMEMP%type;
+BEGIN
+  SELECT NUMEMP INTO IDEMP FROM EMP
+  WHERE NOMCOMPLET=nomEmp;
+  RETURN TRUE;
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN 
+    RETURN FALSE;
+END;
+
+BEGIN
+  if EXIST_EMP('BARTH Florent') then
+    SYS.DBMS_OUTPUT.PUT_LINE('true');
+  else
+    SYS.DBMS_OUTPUT.PUT_LINE('false');
+  end if;
+END;
+
+
+CREATE OR REPLACE FUNCTION app_demp_dept(nomEmp VARCHAR2, deptEmp NUMBER) RETURN VARCHAR2 IS
+phrase EMP.NOMCOMPLET%TYPE;
+IDEMP EMP.NUMEMP%TYPE;
+BEGIN 
+SELECT NUMDEP INTO IDEMP FROM EMP
+WHERE nomEmp = NOMCOMPLET;
+IF deptEmp = IDEMP  then
+  phrase := 'Lemployé fait partie du département ';
+ELSE 
+  phrase := 'Lemployé ne fait pas partie du département ';
+END IF;
+RETURN phrase;
+EXCEPTION
+ WHEN NO_DATA_FOUND Then
+  dbms_output.put_line('Valeur non trouvée');
+END;
+
+BEGIN
+
+  SYS.DBMS_OUTPUT.PUT_LINE(APP_DEMP_DEPT('BARTH Florent',3));
+END;
+
+
+
+
+
+
+
 
