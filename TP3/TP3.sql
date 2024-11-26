@@ -259,6 +259,32 @@ BEGIN
   maj_emp();
 END;
 
+CREATE OR REPLACE PROCEDURE maj_salaires_dept(nomDepP VARCHAR2) IS
+idEMP EMP.numemp%TYPE;
+nombreNomDept DEPT.numDep%TYPE;
+deuxFoisMemeNom EXCEPTION;
+CURSOR employes IS 
+SELECT numemp, SALAIRE FROM EMP E
+JOIN DEPT D
+ON D.NUMDEP = E.NUMDEP
+WHERE D.NOMDEP = nomDepP;
+
+
+BEGIN 
+
+SELECT MAX(COUNT(DISTINCT(nomDep))) AS nombreDeNom INTO nombreNomDept FROM DEPT;
+IF nombreNomDept > 1 Then
+RAISE deuxFoisMemeNom;
+END IF;
+
+
+FOR employe IN employes LOOP
+UPDATE EMP SET EMP.SALAIRE = employe.SALAIRE*1.1 WHERE EMP.NUMEMP = employe.numEmp;
+END LOOP;
+EXCEPTION
+  WHEN deuxFoisMemeNom Then
+    dbms_output.put_line('Il y a 2 fois le même nom');
+END;
 
 
 
