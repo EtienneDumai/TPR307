@@ -287,6 +287,60 @@ EXCEPTION
 END;
 
 
+CREATE OR REPLACE PROCEDURE maj_salaires_cond(nomDepartement VARCHAR2, augment NUMBER) IS
+--Déclaration des variables nécessaires à l'exec du script
+idDepartement DEPT.numDep%TYPE;
+nombreNomDept DEPT.numDep%TYPE;
+moyenneSalDept EMP.salaire%TYPE;
+--Déclaration des exceptions requises dans la consigne
+DeuxFoisMemeNom EXCEPTION;
+ParamNeg EXCEPTION;
+--Declaration et définition du curseur
+cursor employes is 
+  SELECT numemp, SALAIRE FROM EMP E
+  JOIN DEPT D
+  ON D.NUMDEP = E.NUMDEP
+  WHERE D.NOMDEP = nomDepartement;
 
 
-
+--DEBUT DU SCRIPT
+BEGIN
+--Verif si l'augment est inf à 0
+IF augment<0 Then
+--Lever l'exception correspondant
+RAISE Paramneg;
+end if;
+--Recupération de l'id du departement dans une variable
+SELECT numDep INTO idDepartement FROM DEPT
+WHERE nomdep = nomDepartement;
+--recupération de la moyenne des salaires d'un departement dans une variable
+SELECT AVG(salaire) INTO moyenneSalDept  FROM EMP
+JOIN Dept D
+ON D.numdep = EMP.numdep
+WHERE EMP.numdep = idDepartement;
+--Compter si il y a 2 fois le même nom de département
+SELECT MAX(COUNT(DISTINCT(nomDep))) AS nombreDeNom INTO nombreNomDept FROM DEPT;
+--Comparaison pour savoir si il y a plus d'une fois le même nom de departement
+IF nombreNomDept > 1 Then
+--lever l'exception correspondante
+RAISE deuxFoisMemeNom;
+END IF;
+--Parcours du cursueur 
+FOR employe IN employes LOOP
+--Conditions pour augmenter que les employés qui ont un salaire inférieur a la moyenne du salaire de leur departement
+IF employe.salaire<moyenneSalDept Then
+--Mise a jour du salaire de l'employe pointé par le curseur
+UPDATE EMP SET EMP.SALAIRE = employe.SALAIRE*1+(augment/100) WHERE EMP.NUMEMP = employe.numEmp;
+--Commit pour gratter 1 point
+COMMIT;
+end if;
+END LOOP;
+--Definition des exceptions
+EXCEPTION
+  WHEN deuxFoisMemeNom Then
+    dbms_output.put_line('Il y a 2 fois le même nom');
+    WHEN NO_DATA_FOUND Then
+  dbms_output.put_line('Valeur non trouvée');
+  WHEN Paramneg Then
+  dbms_output.put_line('Le pourcentage doit être supérieur ou égal à 0');
+END;
